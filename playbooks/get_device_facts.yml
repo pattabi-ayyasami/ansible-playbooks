@@ -1,0 +1,15 @@
+
+---
+
+- name: Get device facts of SRX 320
+  gather_facts: no
+  hosts: srx
+  connection: local
+
+  tasks:
+    - name: Retrieve JunOS device facts
+      junos_facts:
+    - name: Print device facts
+      debug:
+        var: ansible_net_hostname, ansible_net_serialnum, ansible_net_version
+
