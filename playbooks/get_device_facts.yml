@@ -4,7 +4,7 @@
 - name: Get device facts of SRX 320
   gather_facts: no
   hosts: srx
-  connection: local
+  connection: ansible.netcommon.netconf
 
   tasks:
     - name: Retrieve JunOS device facts
