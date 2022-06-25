@@ -8,11 +8,12 @@
 
   vars:
     log_dir: "{{ playbook_dir }}/logs"
+    ROLLBACK: "{{ 1 }}"
 
-  vars_prompt:
-    - name: "ROLLBACK"
-      prompt: "Rollback ID to compare with active configuration" 
-      private: no
+#  vars_prompt:
+#    - name: "ROLLBACK"
+#      prompt: "Rollback ID to compare with active configuration" 
+#      private: no
 
   tasks:
     - name: "Get committed configuration & Save the diffs"
