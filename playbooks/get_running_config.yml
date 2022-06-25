@@ -20,13 +20,13 @@
       juniper.device.config:
         retrieve: "committed"
         format: "set"
-        dest: "{{ playbook_dir }}/outputs/{{ inventory_hostname }}-latest-committed-config.set"
+#        dest: "{{ playbook_dir }}/outputs/{{ inventory_hostname }}-latest-committed-config.set"
         diff: true
-        diffs_file: "{{ playbook_dir }}/outputs/{{ inventory_hostname }}-diff-rollback-{{ ROLLBACK }}"
+#        diffs_file: "{{ playbook_dir }}/outputs/{{ inventory_hostname }}-diff-rollback-{{ ROLLBACK }}"
         rollback: "{{ ROLLBACK }}"
         check: false
         commit: false
-        logfile: "{{ log_dir }}/get_running_config.log"
+#        logfile: "{{ log_dir }}/get_running_config.log"
       register: response
 
     - name: "Print config"
