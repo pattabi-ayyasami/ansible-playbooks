@@ -1,0 +1,41 @@
+---
+- name: Perform a Junos OS software upgrade
+  hosts: srx
+  connection: local
+  gather_facts: no
+
+  vars:
+    OS_package: "junos-srxsme-15.1X49-D180.2-domestic.tgz"
+    #OS_package: "junos-srxsme-18.4R3-S6.3.tgz"
+    pkg_dir: "software"
+    log_dir: "{{ playbook_dir }}/logs"
+    netconf_port: 830
+    wait_time: 3600
+
+  tasks:
+
+    - name: Upgrade Junos OS
+      juniper.device.software:
+        local_package: "{{ pkg_dir }}/{{ OS_package }}"
+        no_copy: False
+        validate: False
+        reboot: True
+        install_timeout: 2000
+        checksum_timeout: 420
+        cleanfs_timeout: 600
+        logfile: "{{ log_dir }}/firmware_update.log"
+      register: response
+      #notify:
+      #- wait_reboot
+
+    - name: Print the response
+      debug:
+        var: response
+
+  handlers:
+    - name: wait_reboot
+      wait_for: 
+        host: "{{ inventory_hostname }}"
+        port: "{{ netconf_port }}"
+        timeout: "{{ wait_time }}"
+      when: not response.check_mode

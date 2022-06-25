@@ -1,0 +1,39 @@
+
+---
+
+- name: Get running config of SRX 320
+  gather_facts: no
+  hosts: srx
+  connection: local
+
+  vars:
+    log_dir: "{{ playbook_dir }}/logs"
+
+  vars_prompt:
+    - name: "ROLLBACK"
+      prompt: "Rollback ID to compare with active configuration" 
+      private: no
+
+  tasks:
+    - name: "Get committed configuration & Save the diffs"
+      juniper.device.config:
+        retrieve: "committed"
+        format: "set"
+        dest: "{{ playbook_dir }}/outputs/{{ inventory_hostname }}-latest-committed-config.set"
+        diff: true
+        diffs_file: "{{ playbook_dir }}/outputs/{{ inventory_hostname }}-diff-rollback-{{ ROLLBACK }}"
+        rollback: "{{ ROLLBACK }}"
+        check: false
+        commit: false
+        logfile: "{{ log_dir }}/get_running_config.log"
+      register: response
+
+    - name: "Print config"
+      debug:
+        var: response.config_lines
+
+    - name: "Print config diff"
+      debug:
+        var: response.diff_lines
+
+
